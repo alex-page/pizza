@@ -1,4 +1,4 @@
 🍕 Pizza
 ==============
 
-> Visual regression testing that's tasty and cheesy
+> Visual regression testing that's tasty and cheesy.
