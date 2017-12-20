@@ -1,0 +1,40 @@
+{
+	"name": "pizza",
+	"version": "1.0.0",
+	"description": "Visual regression testing that's tasty and cheesy.",
+	"scripts": {
+		"start": ""
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/alex-page/pizza.git"
+	},
+	"keywords": [
+		"visual regression testing",
+		"visual diff",
+		"visual",
+		"regression",
+		"testing",
+		"diff"
+	],
+	"main": "index.js",
+	"author": {
+		"name": "Alex Page",
+		"email": "alex@alexpage.com.au",
+		"url": "http://alexpage.com.au"
+	},
+	"contributors": [
+		{
+			"name": "Alex Page",
+			"email": "alex@alexpage.com.au",
+			"url": "http://alexpage.com.au"
+		}
+	],
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/alex-page/pizza/issues"
+	},
+	"dependencies": {
+		"pixelmatch": "^4.0.2"
+	}
+}
