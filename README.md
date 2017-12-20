@@ -1,4 +1,4 @@
 🍕 Pizza
 ==============
 
-> It's a work of art...
+> Visual regression testing that's tasty and cheesy
