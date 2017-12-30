@@ -10,3 +10,8 @@
 // Save the screenshot into a directory ( one for master, one for compare )
 // If there is one in master and compare do a diff
 // Create a diff directory
+
+
+const Screenshot = require( './src/screenshot' );
+
+Screenshot( [ 'http://alexpage.com.au', 'https://github.com/alex-page' ] );

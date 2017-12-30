@@ -31,9 +31,10 @@ const Puppeteer = require( 'puppeteer' );
 const Screenshot = async ( urls, width, height ) => {
 
 	const browser = await Puppeteer.launch(); // Start puppeteer instance
-	const page    = await browser.newPage();  // Create a new page
 
 	for ( let url of urls ) {
+
+		const page = await browser.newPage();  // Create a new page
 
 		try {
 			await page.goto( url );
@@ -53,6 +54,7 @@ const Screenshot = async ( urls, width, height ) => {
 			return error;
 		}
 
+		await page.close();
 
 	}
 
@@ -60,5 +62,4 @@ const Screenshot = async ( urls, width, height ) => {
 
 };
 
-
-Screenshot( [ 'http://alexpage.com.au', 'https://github.com/alex-page' ] );
+module.exports = Screenshot;

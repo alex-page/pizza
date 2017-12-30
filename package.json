@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "Visual regression testing that's tasty and cheesy.",
 	"scripts": {
-		"start": "node src/screenshot.js"
+		"start": "node index.js"
 	},
 	"repository": {
 		"type": "git",
