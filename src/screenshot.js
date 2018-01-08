@@ -33,9 +33,11 @@ const Screenshot = async ( urls, width, height ) => {
 	Log.verbose( `Screenshot() - Taking screenshot of ${ urls.length } pages`);
 
 	const browser = await Puppeteer.launch(); // Start puppeteer instance
-	const page    = await browser.newPage();  // Create a new page
 
 	for ( let url of urls ) {
+
+		const page = await browser.newPage();  // Create a new page
+		Log.verbose( `Screenshot() - Opened new page`);
 
 		try {
 			await page.goto( url );
@@ -58,6 +60,10 @@ const Screenshot = async ( urls, width, height ) => {
 		catch( error ) {
 			return error;
 		}
+
+		await page.close();
+		Log.verbose( `Screenshot() - Page closed [ ${ url } ]`);
+
 	}
 
 	await browser.close();
