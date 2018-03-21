@@ -53,4 +53,5 @@ const Screenshot = async ( browser, url, width, height ) => {
 
 };
 
+
 module.exports = Screenshot;
