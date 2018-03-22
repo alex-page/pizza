@@ -34,7 +34,7 @@ const SETTINGS = {
 		pizza: {
 			urls: [ 'http://alexpage.com.au', 'https://github.com/alex-page' ],
 			widths: [ 1200, 320 ],
-			directory: 'pizza'
+			directory: './__tests__/pizza/',
 		},
 
 		type: {
@@ -47,7 +47,6 @@ const SETTINGS = {
 				align: 'center',
 				colors: [ 'yellow' ]
 			}).string,
-
 		}
 	},
 

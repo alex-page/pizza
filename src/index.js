@@ -1,6 +1,6 @@
 /***************************************************************************************************************************************************************
  *
- * index.js
+ * index.js - Where the magic happens
  *
  * Initialise() - Make the Pizza 🍕
  *
@@ -21,6 +21,7 @@ const Log       = require( 'lognana' );
 // Local
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 const Screenshot = require( './screenshot' );
+const Prepare    = require( './prepare' );
 const SETTINGS   = require( './settings' );
 
 
@@ -33,17 +34,17 @@ if( process.argv.includes( '-v' ) || process.argv.includes( '--verbose' ) ) {
 
 // Log the welcome message
 console.log( SETTINGS.get().type.title + SETTINGS.get().type.subtitle );
-Log.welcome( 'Lets make the pizza!' );
+Log.welcome( 'Lets‘a make‘a the pizza!' );
 
 
 /**
- * Initialise - Start the visual regression testing
+ * Pizza - Start the visual regression testing
  *
  * @param  {object} settings - The settings that contains url and width
  */
-const Initialise = async ( settings ) => {
-	Log.verbose( `☁️️  Spinning the dough     - Initialise()` );
-
+const Pizza = async ( settings ) => {
+	Log.verbose( `☁️️  Kneading the dough     - Starting test` );
+	Prepare( SETTINGS.get().pizza.directory );
 
 	Log.verbose( `🍅  Lathering on the sauce - Start puppeteer` );
 	const browser = await Puppeteer.launch();
@@ -63,4 +64,4 @@ const Initialise = async ( settings ) => {
 };
 
 
-Initialise( SETTINGS.get().pizza );
+Pizza( SETTINGS.get().pizza );

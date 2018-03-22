@@ -1,8 +1,8 @@
 /***************************************************************************************************************************************************************
  *
- * screenshot.js
+ * screenshot.js - Take screenshots in a headless browser
  *
- * Screenshot - Take a screenshot of a page
+ * Screenshot - Take a screenshot of a page and save it
  *
  **************************************************************************************************************************************************************/
 
@@ -16,6 +16,12 @@
 const Log = require( 'lognana' );
 
 
+// -------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Local
+// -------------------------------------------------------------------------------------------------------------------------------------------------------------
+const SETTINGS = require( './settings' );
+
+
 /**
  * Screenshot - Take a screenshot of a page
  *
@@ -24,9 +30,10 @@ const Log = require( 'lognana' );
  * @param  {number}   width   - The width of the page
  */
 const Screenshot = async ( browser, url, width ) => {
-	Log.verbose( `🧀  Toppings thrown on     - Prepare screenshot ${ url } | [ ${ width } ]` );
+	Log.verbose( `🧀  Toppings thrown on     - Prepare screenshot ${ url } : ${ width }` );
 
 	try {
+		// Create a new page and go to the URL
 		const page = await browser.newPage();
 		await page.goto( url );
 
@@ -37,14 +44,14 @@ const Screenshot = async ( browser, url, width ) => {
 		};
 
 		// Apply the dimensions to the page
-		await page.setViewport( dimensions );
+		page.setViewport( dimensions );
 
-		const filename = ( url.replace(/(^\w+:|^)\/\//, '' ) ).replace( '/', '__');
+		// Save the screenshot
+		const filename = ( url.replace(/(^\w+:|^)\/\//, '' ) ).replace( '/', '_');
+		await page.screenshot({ path: `${ SETTINGS.get().pizza.directory }raw/${ filename }-${ dimensions.width }.png` });
 
-		await page.screenshot({ path: `pizza/compare/${ filename }[${ dimensions.width }].png` });
-
-		Log.verbose( `👍  Toppings look good     - Screenshot taken ${ url } [ ${ width } ]` );
-
+		// Close the page
+		Log.verbose( `👍  Toppings look good     - Screenshot taken ${ url } : ${ width }` );
 		await page.close();
 	}
 	catch( error ) {
