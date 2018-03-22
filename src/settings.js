@@ -11,9 +11,12 @@
 
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
-// Local
+// Dependencies
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
-const Log = require( './helper' ).Log;
+const Log    = require( 'lognana' );
+const CFonts = require( 'cfonts' );
+const Path   = require( 'path' );
+
 
 
 /**
@@ -28,6 +31,24 @@ const SETTINGS = {
 	 * @type {Object}
 	 */
 	defaults: {
+		pizza: {
+			urls: [ 'http://alexpage.com.au', 'https://github.com/alex-page' ],
+			widths: [ 1200, 320 ],
+			directory: 'pizza'
+		},
+
+		type: {
+			title: CFonts.render( 'Pizza', {
+				align: 'center',
+				colors: [ 'yellow', 'red' ]
+			}).string,
+			subtitle:  CFonts.render( '- Visual regression testing that is tasty and cheesy -', {
+				font: 'console',
+				align: 'center',
+				colors: [ 'yellow' ]
+			}).string,
+
+		}
 	},
 
 

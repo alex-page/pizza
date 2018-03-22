@@ -2,9 +2,12 @@
  *
  * index.js
  *
- * Make the Pizza 🍕
+ * Initialise() - Make the Pizza 🍕
  *
  **************************************************************************************************************************************************************/
+
+
+'use strict';
 
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -12,58 +15,52 @@
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 const Puppeteer = require( 'puppeteer' );
 const Log       = require( 'lognana' );
-const CFonts    = require( 'cfonts' );
 
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Local
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 const Screenshot = require( './screenshot' );
+const SETTINGS   = require( './settings' );
 
 
-const pizza = CFonts.render( 'Pizza', {
-	// font: '3d',
-	align: 'center',
-	colors: [ 'yellow', 'red' ]
-}).string;
-
-
-// Log settings and check if the user is in verbose mode
+// Lognana settings and check if the user is in verbose mode
 Log.emoji = '🍕';
-if(process.argv.includes('-v') || process.argv.includes('--verbose')) {
+if( process.argv.includes( '-v' ) || process.argv.includes( '--verbose' ) ) {
 	Log.verboseMode = true;
 };
 
 
-console.log( pizza );
-Log.welcome( 'Making the pizza!' );
+// Log the welcome message
+console.log( SETTINGS.get().type.title + SETTINGS.get().type.subtitle );
+Log.welcome( 'Lets make the pizza!' );
 
-
-/*
- * GetURLs - Get the urls
- */
-const GetURLs = ( url ) => {
-	return [ 'http://alexpage.com.au', 'https://github.com/alex-page' ];
-};
 
 /**
  * Initialise - Start the visual regression testing
+ *
+ * @param  {object} settings - The settings that contains url and width
  */
-const Initialise = async () => {
-	Log.verbose( `Initialise() - Spinning the dough` );
+const Initialise = async ( settings ) => {
+	Log.verbose( `☁️️  Spinning the dough     - Initialise()` );
 
-	const urls    = GetURLs( 'http://alexpage.com.au' );
 
-	Log.verbose( `Initialise() - Lathering on the sauce` );
-	const browser = await Puppeteer.launch(); // Start puppeteer headless browser
+	Log.verbose( `🍅  Lathering on the sauce - Start puppeteer` );
+	const browser = await Puppeteer.launch();
 
-	urls.forEach( url => {
-		Screenshot( browser, url );
-	});
+	// For each URL and width take a screenshot of the page
+	const screenshotTasks = [];
+	settings.urls.map( url => settings.widths.map( width => {
+		screenshotTasks.push( Screenshot( browser, url, width ) );
+	}));
 
-	Log.verbose( `Initialise() - Putting the pizza into the 🔥` );
+	await Promise.all( screenshotTasks )
+		.catch( error => Log.error( error.message ) );
+
+
+	Log.verbose( `🔥  Paddling into oven     - Closing puppeteer ` );
 	await browser.close();
-}
+};
 
 
-Initialise();
+Initialise( SETTINGS.get().pizza );

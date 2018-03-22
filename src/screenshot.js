@@ -1,6 +1,6 @@
 /***************************************************************************************************************************************************************
  *
- * Take a screenshot of a website.
+ * screenshot.js
  *
  * Screenshot - Take a screenshot of a page
  *
@@ -19,38 +19,40 @@ const Log = require( 'lognana' );
 /**
  * Screenshot - Take a screenshot of a page
  *
- * @param  {string} pathToFile - The path to the file which will be read
- *
- * @return {string}            - Resolves the contents of the file
+ * @param  {function} browser - The puppeteer browser instance
+ * @param  {string}   url     - The url of the page
+ * @param  {number}   width   - The width of the page
  */
-const Screenshot = async ( browser, url, width, height ) => {
-	Log.verbose( `Screenshot() - Adding ${ url } to the pizza` );
+const Screenshot = async ( browser, url, width ) => {
+	Log.verbose( `🧀  Toppings thrown on     - Prepare screenshot ${ url } | [ ${ width } ]` );
 
 	try {
-		const page = browser.newPage();
+		const page = await browser.newPage();
 		await page.goto( url );
 
+		// Get the page dimensions
 		const dimensions = {
-			height: height || await page.evaluate( () => document.documentElement.offsetHeight ),
-			width:  width  || 1200,
+			height: await page.evaluate( () => document.documentElement.offsetHeight ),
+			width:  width,
 		};
 
-		page.setViewport( dimensions ); // Apply the dimensions to the page
+		// Apply the dimensions to the page
+		await page.setViewport( dimensions );
 
 		const filename = ( url.replace(/(^\w+:|^)\/\//, '' ) ).replace( '/', '__');
 
 		await page.screenshot({ path: `pizza/compare/${ filename }[${ dimensions.width }].png` });
 
-		Log.verbose( `Screenshot() - Topping ${ url } added to the pizza` );
+		Log.verbose( `👍  Toppings look good     - Screenshot taken ${ url } [ ${ width } ]` );
 
 		await page.close();
 	}
 	catch( error ) {
+
 		Log.error( error.message );
 
 		await page.close();
 	}
-
 };
 
 
