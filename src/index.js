@@ -20,9 +20,10 @@ const Log       = require( 'lognana' );
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Local
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
-const Screenshot = require( './screenshot' );
-const Prepare    = require( './prepare' );
-const SETTINGS   = require( './settings' );
+const Screenshot  = require( './screenshot' );
+const Prepare     = require( './prepare' );
+const CompareBulk = require( './compare' );
+const SETTINGS    = require( './settings' );
 
 
 // Lognana settings and check if the user is in verbose mode
@@ -44,19 +45,30 @@ Log.welcome( 'Lets‘a make‘a the pizza!' );
  */
 const Pizza = async ( settings ) => {
 	Log.verbose( `☁️️  Kneading the dough     - Starting test` );
-	Prepare( SETTINGS.get().pizza.directory );
+	Prepare( settings.directories );
 
 	Log.verbose( `🍅  Lathering on the sauce - Start puppeteer` );
 	const browser = await Puppeteer.launch();
 
 	// For each URL and width take a screenshot of the page
-	const screenshotTasks = [];
+	const screenshots = [];
+	const files           = [];
 	settings.urls.map( url => settings.widths.map( width => {
-		screenshotTasks.push( Screenshot( browser, url, width ) );
+		// Get the file name add it to the files
+		const filename = ( url.replace(/(^\w+:|^)\/\//, '' ) ).replace( '/', '_');
+		const file     = `${ filename }-${ width }.png`;
+		files.push( file );
+
+		screenshots.push( Screenshot( browser, files, url, width ) );
 	}));
 
-	await Promise.all( screenshotTasks )
-		.catch( error => Log.error( error.message ) );
+	// Take screenshots
+	await Promise.all( screenshots )
+		.catch( error   => Log.error( error.message ) );
+
+
+	// Compare the files
+	await CompareBulk( files );
 
 
 	Log.verbose( `🔥  Paddling into oven     - Closing puppeteer ` );

@@ -29,8 +29,8 @@ const SETTINGS = require( './settings' );
  * @param  {string}   url     - The url of the page
  * @param  {number}   width   - The width of the page
  */
-const Screenshot = async ( browser, url, width ) => {
-	Log.verbose( `🧀  Toppings thrown on     - Prepare screenshot ${ url } : ${ width }` );
+const Screenshot = async ( browser, files, url, width ) => {
+	Log.verbose( `🧀  Mozzarella scattered   - Prepare screenshot ${ file }` );
 
 	try {
 		// Create a new page and go to the URL
@@ -47,11 +47,10 @@ const Screenshot = async ( browser, url, width ) => {
 		page.setViewport( dimensions );
 
 		// Save the screenshot
-		const filename = ( url.replace(/(^\w+:|^)\/\//, '' ) ).replace( '/', '_');
-		await page.screenshot({ path: `${ SETTINGS.get().pizza.directory }raw/${ filename }-${ dimensions.width }.png` });
+		await page.screenshot({ path: `${ SETTINGS.get().pizza.directories.raw }/${ file }` });
 
 		// Close the page
-		Log.verbose( `👍  Toppings look good     - Screenshot taken ${ url } : ${ width }` );
+		Log.verbose( `🍃  Basil sprinkled        - Screenshot taken ${ file }` );
 		await page.close();
 	}
 	catch( error ) {

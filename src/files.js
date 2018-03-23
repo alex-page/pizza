@@ -31,7 +31,7 @@ const Log     = require( 'lognana' );
  * @return {string}     - The path that was just worked at
  */
 const CreateDir = ( dir ) => {
-	Log.verbose( `Check exists:   "${ dir }"` );
+	Log.verbose( `💪  Stretching the dough   - Check exists:   "${ dir }"` );
 
 	const splitPath = dir.split( '/' );
 
@@ -50,7 +50,7 @@ const CreateDir = ( dir ) => {
 				try {
 					Fs.mkdirSync( currentPath );
 
-					Log.verbose( `Created:        "${ currentPath }"` )
+					Log.verbose( `⚪️  Dough is ready         - Created:        "${ currentPath }"` )
 				}
 				catch( error ) {
 					Log.error( `Error when creating the folder ${ currentPath  } for path ${ dir }` );
@@ -79,7 +79,7 @@ const CreateDir = ( dir ) => {
 const RemoveDir = ( dir ) => {
 	try {
 		Del.sync( dir );
-		Log.verbose( `Removed folder: ${ JSON.stringify( dir ) } ` )
+		Log.verbose( `🗑  Tossed scraps away     - Removed folder: ${ JSON.stringify( dir ) } ` )
 	}
 	catch( error ) {
 		Log.error( error );

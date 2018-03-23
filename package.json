@@ -40,7 +40,7 @@
 		"del": "^3.0.0",
 		"fs-extra": "^5.0.0",
 		"lognana": "^1.0.0",
-		"pixelmatch": "^4.0.2",
-		"puppeteer": "^1.2.0"
+		"puppeteer": "^1.2.0",
+		"resemblejs": "^2.10.0"
 	}
 }

@@ -20,32 +20,27 @@ const Path  = require( 'path' );
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Local
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const SETTINGS  = require( './settings' );
 const CreateDir = require( './files' ).CreateDir;
 const RemoveDir = require( './files' ).RemoveDir;
 
 
-const Prepare = ( location ) => {
+const Prepare = ( directories ) => {
 	Log.verbose( '🍥  Spinning the dough     - Creating directories' );
-	const directory = {
-		default:  location,
-		raw:      location + 'raw',
-		fixture:  location + 'fixture',
-		diff:     location + 'diff',
-	}
 
 	// Check if we already have fixtures
 	let _fixturesExist = false;
-	if( Fs.existsSync( directory.default ) ){
+	if( Fs.existsSync( directories.fixture ) ){
 		_fixturesExist = true;
 	}
 
 	// Remove the raw and diff dirertory
-	RemoveDir( directory.raw );
-	RemoveDir( directory.diff );
+	RemoveDir( directories.raw );
+	RemoveDir( directories.diff );
 
 	// Create the location directory if it doesn't exist
-	Object.values( directory ).map( dir => {
-		CreateDir( dir );
+	Object.values( directories ).map( directory => {
+		CreateDir( directory );
 	});
 
 	return _fixturesExist;

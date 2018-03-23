@@ -34,7 +34,11 @@ const SETTINGS = {
 		pizza: {
 			urls: [ 'http://alexpage.com.au', 'https://github.com/alex-page' ],
 			widths: [ 1200, 320 ],
-			directory: './__tests__/pizza/',
+			directories: {
+				raw:      './__tests__/pizza/raw',
+				fixture:  './__tests__/pizza/fixture',
+				diff:     './__tests__/pizza/diff',
+			}
 		},
 
 		type: {
