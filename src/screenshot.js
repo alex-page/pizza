@@ -13,7 +13,7 @@
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Dependencies
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
-const Log = require( 'lognana' );
+const Log = require( 'indent-log' );
 
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -29,36 +29,42 @@ const SETTINGS = require( './settings' );
  * @param  {string}   url     - The url of the page
  * @param  {number}   width   - The width of the page
  */
-const Screenshot = async ( browser, files, url, width ) => {
+const Screenshot = ( browser, file, url, width ) => {
 	Log.verbose( `🧀  Mozzarella scattered   - Prepare screenshot ${ file }` );
 
-	try {
-		// Create a new page and go to the URL
-		const page = await browser.newPage();
-		await page.goto( url );
+	return new Promise( async ( resolve, reject ) => {
+		try {
+			// Create a new page and go to the URL
+			const page = await browser.newPage();
+			await page.goto( url );
 
-		// Get the page dimensions
-		const dimensions = {
-			height: await page.evaluate( () => document.documentElement.offsetHeight ),
-			width:  width,
-		};
+			// Changing the width so we can measure the height of the page for that width
+			page.setViewport({
+				height: 10,
+				width,
+			});
 
-		// Apply the dimensions to the page
-		page.setViewport( dimensions );
+			const height = await page.evaluate( () => document.documentElement.scrollHeight );
 
-		// Save the screenshot
-		await page.screenshot({ path: `${ SETTINGS.get().pizza.directories.raw }/${ file }` });
+			// Apply the dimensions to the page
+			page.setViewport({
+				height,
+				width,
+			});
 
-		// Close the page
-		Log.verbose( `🍃  Basil sprinkled        - Screenshot taken ${ file }` );
-		await page.close();
-	}
-	catch( error ) {
+			// Save the screenshot
+			await page.screenshot({ path: `${ SETTINGS.get().pizza.directories.raw }/${ file }` });
 
-		Log.error( error.message );
-
-		await page.close();
-	}
+			// Close the page
+			Log.verbose( `🍃  Basil sprinkled        - Screenshot taken ${ file }` );
+			await page.close();
+			resolve();
+		}
+		catch( error ) {
+			await page.close();
+			reject( error );
+		}
+	});
 };
 
 

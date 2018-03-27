@@ -19,7 +19,7 @@ const Fs      = require( 'fs' );
 const Path    = require( 'path' );
 const FsExtra = require( 'fs-extra' );
 const Del     = require( 'del' );
-const Log     = require( 'lognana' );
+const Log     = require( 'indent-log' );
 
 
 

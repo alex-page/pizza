@@ -13,9 +13,9 @@
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Dependencies
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
-const Log           = require( 'lognana' );
-const CompareImages = require('resemblejs/compareImages');
-
+const Log           = require( 'indent-log' );
+const CompareImages = require( 'resemblejs/compareImages' );
+const Fs            = require( "mz/fs" );
 
 
 /**
@@ -24,19 +24,27 @@ const CompareImages = require('resemblejs/compareImages');
  * @param  {array}   files   - The file names to compare
  *
  */
-const CompareBulk = async ( files ) => {
-	Log.verbose( `👀  Inspecting the crust   - Comparing ${ files.length } files` );
+const Compare = ( file, directories, visualDiffOptions ) => {
+	Log.verbose( `👀  Inspecting the crust   - Comparing ${ file }` );
 
-	const comparisons = [];
-	files.map( file => {
-		comparisons.push( Compare( file ) );
+	return new Promise( async ( resolve, reject ) => {
+
+		try {
+			const data = await CompareImages(
+				await Fs.readFile( directories.raw + file ),
+				await Fs.readFile( directories.fixture + file ),
+				visualDiffOptions
+			);
+
+			await Fs.writeFile( directories.diff + file, data.getBuffer());
+
+			resolve();
+		}
+		catch( error ) {
+			reject( error );
+		}
 	});
-
-
-	// Take screenshots
-	await Promise.all( comparisons )
-		.catch( error   => Log.error( error.message ) );
 };
 
 
-module.exports = CompareBulk;
+module.exports = Compare;

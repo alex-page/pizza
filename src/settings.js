@@ -13,11 +13,9 @@
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Dependencies
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------
-const Log    = require( 'lognana' );
+const Log    = require( 'indent-log' );
 const CFonts = require( 'cfonts' );
 const Path   = require( 'path' );
-
-
 
 /**
  * Keeping our settings across multiple imports
@@ -32,15 +30,30 @@ const SETTINGS = {
 	 */
 	defaults: {
 		pizza: {
-			urls: [ 'http://alexpage.com.au', 'https://github.com/alex-page' ],
+			urls: [ 'http://alexpage.com.au/' ],
 			widths: [ 1200, 320 ],
 			directories: {
-				raw:      './__tests__/pizza/raw',
-				fixture:  './__tests__/pizza/fixture',
-				diff:     './__tests__/pizza/diff',
+				raw:      './__tests__/pizza/raw/',
+				fixture:  './__tests__/pizza/fixture/',
+				diff:     './__tests__/pizza/diff/',
 			}
 		},
-
+		visualDiff: {
+			output: {
+				errorColor: {
+					red: 255,
+					green: 0,
+					blue: 255
+				},
+				errorType: 'movement',
+				transparency: 0.3,
+				largeImageThreshold: 1200,
+				useCrossOrigin: false,
+				outputDiff: true
+			},
+			scaleToSameSize: true,
+			ignore: [ 'nothing', 'less', 'antialiasing', 'colors', 'alpha' ],
+		},
 		type: {
 			title: CFonts.render( 'Pizza', {
 				align: 'center',
