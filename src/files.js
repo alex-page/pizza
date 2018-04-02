@@ -87,7 +87,18 @@ const RemoveDir = ( dir ) => {
 }
 
 
+/**
+ * Create a file name from a url, width and browser
+ * @param {*} url
+ */
+const FileName = ( url, width, browser ) => {
+	const filename = url.replace( /(^\w+:|^)\/\//, '' ).replace( /\//g, '_' );
+	return `${ browser }__${ width }__${ filename }.png`;
+}
+
+
 module.exports = {
 	RemoveDir: RemoveDir,
-	CreateDir: CreateDir
+	CreateDir: CreateDir,
+	FileName:  FileName
 }

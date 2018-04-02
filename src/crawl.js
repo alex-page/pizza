@@ -20,23 +20,28 @@ const Crawler    = require( 'js-crawler' );
 
 
 const Crawl = ( url, depth ) => {
-	Log.verbose( `Crawling ${ url }` );
-
-	// Configure the crawlers depth and to only test pages on the local url
-	var crawler = new Crawler().configure({
-		depth: depth,
-		shouldCrawl: ( link ) => link.indexOf( url ) === 0,
-	});
+	Log.verbose( `🔪  Preparing toppings     - Crawling ${ url }` );
 
 	return new Promise( ( resolve, reject ) => {
+
+		// Configure the crawlers depth and to only test pages on the local url
+		var crawler = new Crawler().configure({
+			depth: depth,
+			shouldCrawl: ( link ) => link.indexOf( url ) === 0,
+		});
 
 		crawler.crawl({
 			url: url,
 			success:  ( page ) => null,
-			failure:  ( page ) => Log.error( `${ page.status } error: ${ page.url }`  ),
-			finished: ( urls ) => {
-				resolve( urls );
+			failure:  ( page ) => {
+				if ( page.status === undefined ) {
+					reject( `❌  Invalid url: ${ url }` )
+				}
+				else {
+					Log.error( `${ page.status } error: ${ page.url }`  )
+				}
 			},
+			finished: ( urls ) => resolve( urls ),
 		})
 
 	})

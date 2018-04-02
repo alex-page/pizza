@@ -29,8 +29,8 @@ const SETTINGS = require( './settings' );
  * @param  {string}   url     - The url of the page
  * @param  {number}   width   - The width of the page
  */
-const Screenshot = ( browser, file, url, width ) => {
-	Log.verbose( `🧀  Mozzarella scattered   - Prepare screenshot ${ file }` );
+const Screenshot = ( browser, url, width, filename ) => {
+	Log.verbose( `🧀  Mozzarella scattered   - Prepare screenshot ${ filename }` );
 
 	return new Promise( async ( resolve, reject ) => {
 		try {
@@ -39,30 +39,27 @@ const Screenshot = ( browser, file, url, width ) => {
 			await page.goto( url );
 
 			// Changing the width so we can measure the height of the page for that width
-			page.setViewport({
-				height: 10,
-				width,
-			});
+			page.setViewport({ height: 10, width });
 
 			const height = await page.evaluate( () => document.documentElement.scrollHeight );
 
 			// Apply the dimensions to the page
-			page.setViewport({
-				height,
-				width,
-			});
+			page.setViewport({ height, width });
 
 			// Save the screenshot
-			await page.screenshot({ path: `${ SETTINGS.get().pizza.directories.raw }/${ file }` });
+			await page.screenshot({ path: `${ SETTINGS.get().pizza.directories.raw }/${ filename }` });
 
 			// Close the page
-			Log.verbose( `🍃  Basil sprinkled        - Screenshot taken ${ file }` );
 			await page.close();
+
+			// Jobs done resolve promise
+			Log.verbose( `🍃  Basil sprinkled        - Screenshot taken ${ filename }` );
 			resolve();
 		}
 		catch( error ) {
 			await page.close();
 			reject( error );
+			throw( error );
 		}
 	});
 };

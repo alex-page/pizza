@@ -26,6 +26,8 @@ const Prepare     = require( './prepare' );
 const Crawl       = require( './crawl' );
 const Compare     = require( './compare' );
 const SETTINGS    = require( './settings' );
+const FileName    = require( './files' ).FileName;
+
 
 
 // indent-log settings and check if the user is in verbose mode
@@ -54,39 +56,30 @@ Log.banner( 'Lets‘a make‘a the pizza!' );
  * @param  {object} settings - The settings that contains url and width
  */
 const Pizza = async ( settings ) => {
-	Log.verbose( `☁️️  Kneading the dough     - Starting test` );
-	Prepare( settings.directories );
 
-	const urls = await Crawl( settings.urls[ 0 ], 3 );
+	try {
+		Log.verbose( `☁️️  Kneading the dough     - Starting test` );
+		Prepare( settings.directories );
 
-	Log.verbose( `🍅  Lathering on the sauce - Start puppeteer` );
-	const browser = await Puppeteer.launch();
+		const urls = await Crawl( settings.urls[ 0 ], 1 );
 
-	// For each URL and width add a job to the queue
-	return urls.map( ( url ) => {
-		settings.widths.map( async ( width ) => {
+		Log.verbose( `🍅  Lathering on the sauce - Start puppeteer` );
+		const browserInstance = await Puppeteer.launch();
 
-			// Get the file name add it to the files
-			const filename = url.replace( /(^\w+:|^)\/\//, '' ).replace( /\//g, '_' );
-			const file     = `${ filename }${ width }.png`;
+		// Screenshot the website then compare it to the fixture
+		for( const url of urls ) {
+			for ( const width of settings.widths ) {
+				await Screenshot( browserInstance, url, width, FileName( url, width, 'chrome' ) );
+				await Compare( FileName( url, width, 'chrome' ), settings.directories, SETTINGS.get().visualDiff );
+			}
+		};
 
-			// Screenshot the website then compare it to the fixture
-			await Screenshot( browser, file, url, width );
-			await Compare( file, settings.directories, SETTINGS.get().visualDiff );
-
-		})
-	});
-
-
-	// Take screenshots and compare
-	await Promise.all( screenshotJob )
-		.catch( error   => Log.error( error.message ) );
-
-	// await Promise.all( compareJob )
-	// 	.catch( error   => Log.error( error.message ) );
-
-	Log.verbose( `🔥  Paddling into oven     - Closing puppeteer ` );
-	await browser.close();
+		Log.verbose( `🔥  Paddling into oven     - Closing puppeteer ` );
+		await browserInstance.close();
+	}
+	catch( error ){
+		Log.error( error );
+	}
 };
 
 
@@ -95,7 +88,7 @@ const Pizza = async ( settings ) => {
 		Pizza( SETTINGS.get().pizza );
 	}
 	catch( error ) {
-		Log.error( `Theres no cheesy crust, I SAID CHEESY CRUST IS IMPORTANT - Dominik` );
+		Log.error( `Theres no cheesy crust... I specifically said cheesy crust is important!` );
 		Log.error( error.message );
 	}
 })()

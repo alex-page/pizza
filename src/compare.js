@@ -24,19 +24,20 @@ const Fs            = require( "mz/fs" );
  * @param  {array}   files   - The file names to compare
  *
  */
-const Compare = ( file, directories, visualDiffOptions ) => {
-	Log.verbose( `👀  Inspecting the crust   - Comparing ${ file }` );
+const Compare = ( filename, directories, visualDiffOptions ) => {
+	Log.verbose( `👀  Inspecting the crust   - Comparing ${ filename }` );
 
 	return new Promise( async ( resolve, reject ) => {
 
-		try {
-			const data = await CompareImages(
-				await Fs.readFile( directories.raw + file ),
-				await Fs.readFile( directories.fixture + file ),
-				visualDiffOptions
-			);
+		const rawFile     = await Fs.readFile( directories.raw + filename );
+		const fixtureFile = await Fs.readFile( directories.fixture + filename );
 
-			await Fs.writeFile( directories.diff + file, data.getBuffer());
+		try {
+			const data = await CompareImages( rawFile, fixtureFile, visualDiffOptions );
+
+			console.log( data );
+
+			// await Fs.writeFile( directories.diff + filename, data.getBuffer());
 
 			resolve();
 		}

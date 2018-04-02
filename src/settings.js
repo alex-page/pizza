@@ -30,7 +30,7 @@ const SETTINGS = {
 	 */
 	defaults: {
 		pizza: {
-			urls: [ 'http://alexpage.com.au/' ],
+			urls: [ 'http://alexpage.com.au' ],
 			widths: [ 1200, 320 ],
 			directories: {
 				raw:      './__tests__/pizza/raw/',
