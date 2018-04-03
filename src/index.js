@@ -61,7 +61,7 @@ const Pizza = async ( settings ) => {
 		Log.verbose( `☁️️  Kneading the dough     - Starting test` );
 		Prepare( settings.directories );
 
-		const urls = await Crawl( settings.urls[ 0 ], 1 );
+		const urls = await Crawl( settings.urls[ 0 ], 2 );
 
 		// Preparing the different screenshot and comparision tasks
 		let options = urls.map( url =>

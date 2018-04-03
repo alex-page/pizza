@@ -30,7 +30,7 @@ const SETTINGS = {
 	 */
 	defaults: {
 		pizza: {
-			urls: [ 'http://alexpage.com.au' ],
+			urls: [ 'http://localhost:8080/' ],
 			widths: [ 1200, 320 ],
 			directories: {
 				raw:      './__tests__/pizza/raw/',
@@ -46,7 +46,7 @@ const SETTINGS = {
 					blue: 255
 				},
 				errorType: 'movement',
-				transparency: 0.3,
+				transparency: 1,
 				largeImageThreshold: 1200,
 				useCrossOrigin: false,
 				outputDiff: true

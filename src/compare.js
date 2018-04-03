@@ -35,7 +35,7 @@ const Compare = ( filename, directories, visualDiffOptions ) => {
 		try {
 			const data = await CompareImages( rawFile, fixtureFile, visualDiffOptions );
 
-			// await Fs.writeFile( directories.diff + filename, data.getBuffer());
+			await Fs.writeFile( directories.diff + filename, data.getBuffer());
 
 			resolve();
 		}
