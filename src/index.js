@@ -63,17 +63,31 @@ const Pizza = async ( settings ) => {
 
 		const urls = await Crawl( settings.urls[ 0 ], 1 );
 
+		// Preparing the different screenshot and comparision tasks
+		let options = urls.map( url =>
+			settings.widths.map( width => {
+				return {
+					url,
+					width,
+					filename: FileName( url, width, 'chrome' )
+				};
+			})
+		);
+
+		// Flatten the options
+		options = [].concat.apply( [], options );
+
+		// Start the browser
 		Log.verbose( `🍅  Lathering on the sauce - Start puppeteer` );
 		const browserInstance = await Puppeteer.launch();
 
-		// Screenshot the website then compare it to the fixture
-		for( const url of urls ) {
-			for ( const width of settings.widths ) {
-				await Screenshot( browserInstance, url, width, FileName( url, width, 'chrome' ) );
-				await Compare( FileName( url, width, 'chrome' ), settings.directories, SETTINGS.get().visualDiff );
-			}
-		};
+		// Iterated through the options and screenshot and compare
+		await Promise.all( options.map( async ( option ) => {
+			await Screenshot( browserInstance, option.url, option.width, option.filename );
+			await Compare( option.filename, settings.directories, SETTINGS.get().visualDiff );
+		}));
 
+		// Close the browser instance
 		Log.verbose( `🔥  Paddling into oven     - Closing puppeteer ` );
 		await browserInstance.close();
 	}
