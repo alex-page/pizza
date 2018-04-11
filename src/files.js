@@ -35,22 +35,18 @@ const CreateDir = ( dir ) => {
 
 	splitPath.reduce( ( path, subPath ) => {
 		let currentPath;
-		let formattedPath = '';
+		let formattedPath = path;
 
-		if( /^win/.test( process.platform ) && path === '' ) {
+		if( /^win/.test( process.platform ) && formattedPath === '' ) {
 			// when using windows (post truth) at beginning of the path
 			// we add the prefix to make sure it works on windows (yuck)
 			formattedPath = './';
 		}
 
-		console.log( `Formatted path: ${ formattedPath }` );
-
 		if( subPath !== '.' ) {
 			currentPath = Path.normalize( `${ formattedPath }/${ subPath }` );
 
-			console.log( currentPath );
-
-			// Log.verbose( `Checking if ${ currentPath } exists` );
+			Log.verbose( `Checking if ${ currentPath } exists` );
 			if( !Fs.existsSync( currentPath ) ) {
 				try {
 					Fs.mkdirSync( currentPath );

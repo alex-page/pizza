@@ -38,7 +38,7 @@ const Crawl = ( url, depth ) => {
 
 		crawler.crawl({
 			url,
-			success: null,
+			success: () => null,
 			failure: ( page ) => {
 				if( page.status === undefined ) {
 					reject( new Error( `❌  Invalid url: ${ url }` ) );

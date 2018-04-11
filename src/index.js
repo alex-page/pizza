@@ -15,6 +15,7 @@
 // ---------------------------------------------------------------------------------------------------------------------
 const Puppeteer = require( 'puppeteer' );
 const Log = require( 'indent-log' );
+const CFonts = require( 'cfonts' );
 
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -45,7 +46,17 @@ if( process.argv.includes( '-v' ) || process.argv.includes( '--verbose' ) ) {
 
 
 // Log the welcome message
-console.log( SETTINGS.get().type.title + SETTINGS.get().type.subtitle );
+CFonts.say( 'Pizza', {
+	align:  'center',
+	colors: [ 'yellow', 'red' ],
+});
+
+CFonts.say( '- Visual regression testing that is tasty and cheesy -', {
+	font:   'console',
+	align:  'center',
+	colors: [ 'yellow' ],
+});
+
 Log.banner( 'Lets‘a make‘a the pizza!' );
 
 

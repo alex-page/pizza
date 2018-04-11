@@ -43,7 +43,8 @@ const Screenshot = ( browser, url, width, filename ) => {
 			// Changing the width so we can measure the height of the page for that width
 			page.setViewport({ height: 10, width });
 
-			const height = await page.evaluate( document => document.documentElement.scrollHeight );
+			// Get Height - document is not defined but is a html value inside page.evaluate
+			const height = await page.evaluate( () => document.documentElement.scrollHeight ); // eslint-disable-line
 
 			// Apply the dimensions to the page
 			page.setViewport({ height, width });

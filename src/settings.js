@@ -14,7 +14,6 @@
 // Dependencies
 // ---------------------------------------------------------------------------------------------------------------------
 const Log = require( 'indent-log' );
-const CFonts = require( 'cfonts' );
 
 
 /**
@@ -49,17 +48,6 @@ const SETTINGS = {
 			},
 			scaleToSameSize: true,
 			ignore:          [ 'nothing', 'less', 'antialiasing', 'colors', 'alpha' ],
-		},
-		type: {
-			title: CFonts.render( 'Pizza', {
-				align:  'center',
-				colors: [ 'yellow', 'red' ],
-			}).string,
-			subtitle: CFonts.render( '- Visual regression testing that is tasty and cheesy -', {
-				font:   'console',
-				align:  'center',
-				colors: [ 'yellow' ],
-			}).string,
 		},
 	},
 
