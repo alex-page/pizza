@@ -1,4 +1,4 @@
-/***************************************************************************************************************************************************************
+/*
  *
  * prepare.js - Interact with the file system
  *
@@ -6,44 +6,35 @@
  * RemoveDir  - Removing folders and all it’s sub folders
  * CopyFiles  - Copy a folder
  *
- **************************************************************************************************************************************************************/
+ */
 
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // Dependencies
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const Log   = require( 'indent-log' );
-const Fs    = require( 'fs' );
-const Path  = require( 'path' );
+//----------------------------------------------------------------------------------------------------------------------
+const Log = require( 'indent-log' );
 
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // Local
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const SETTINGS  = require( './settings' );
-const CreateDir = require( './files' ).CreateDir;
-const RemoveDir = require( './files' ).RemoveDir;
+//----------------------------------------------------------------------------------------------------------------------
+const { CreateDir } = require( './files' );
+const { RemoveDir } = require( './files' );
 
-
+/**
+ * Prepare - Set up all of the directories
+ *
+ * @param  {object} directories - The directories to create and delete
+ */
 const Prepare = ( directories ) => {
 	Log.verbose( '🍥  Spinning the dough     - Creating directories' );
-
-	// Check if we already have fixtures
-	let _fixturesExist = false;
-	if( Fs.existsSync( directories.fixture ) ){
-		_fixturesExist = true;
-	}
 
 	// Remove the raw and diff dirertory
 	RemoveDir( directories.raw );
 	RemoveDir( directories.diff );
 
 	// Create the location directory if it doesn't exist
-	Object.values( directories ).map( directory => {
-		CreateDir( directory );
-	});
-
-	return _fixturesExist;
+	Object.values( directories ).map( directory => CreateDir( directory ) );
 };
 
 

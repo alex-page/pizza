@@ -44,5 +44,9 @@
 		"mz": "^2.7.0",
 		"puppeteer": "^1.2.0",
 		"resemblejs": "^2.10.0"
+	},
+	"devDependencies": {
+		"eslint-config-airbnb-base": "^12.1.0",
+		"eslint-plugin-import": "^2.10.0"
 	}
 }
