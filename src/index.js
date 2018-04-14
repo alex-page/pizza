@@ -97,7 +97,8 @@ const Pizza = async ( settings ) => {
 		await browserInstance.close();
 	}
 	catch( error ) {
-		Log.error( error );
+		Log.error( error.message );
+		console.log( error ); // eslint-disable-line
 	}
 };
 

@@ -15,7 +15,12 @@
 // ---------------------------------------------------------------------------------------------------------------------
 const Log = require( 'indent-log' );
 const CompareImages = require( 'resemblejs/compareImages' );
-const Fs = require( 'mz/fs' );
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// Local
+//----------------------------------------------------------------------------------------------------------------------
+const { ReadFile, WriteFile } = require( './files' );
 
 
 /**
@@ -31,13 +36,13 @@ const Compare = ( filename, directories, visualDiffOptions ) => {
 	Log.verbose( `👀  Inspecting the crust   - Comparing ${ filename }` );
 
 	return new Promise( async ( resolve, reject ) => {
-		const rawFile = await Fs.readFile( directories.raw + filename );
-		const fixtureFile = await Fs.readFile( directories.fixture + filename );
+		const rawFile = await ReadFile( directories.raw + filename );
+		const fixtureFile = await ReadFile( directories.fixture + filename );
 
 		try {
 			const data = await CompareImages( rawFile, fixtureFile, visualDiffOptions );
 
-			await Fs.writeFile( directories.diff + filename, data.getBuffer() );
+			await WriteFile( directories.diff + filename, data.getBuffer() );
 
 			resolve();
 		}

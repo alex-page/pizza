@@ -40,12 +40,10 @@ const Crawl = ( url, depth ) => {
 			url,
 			success: () => null,
 			failure: ( page ) => {
-				if( page.status === undefined ) {
-					reject( new Error( `❌  Invalid url: ${ url }` ) );
+				if( page.error ) {
+					return reject( new Error( page.error ) );
 				}
-				else {
-					Log.error( `${ page.status } error: ${ page.url }` );
-				}
+				return null;
 			},
 			finished: urls => resolve( urls ),
 		});

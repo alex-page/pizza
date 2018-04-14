@@ -46,7 +46,7 @@ const CreateDir = ( dir ) => {
 		if( subPath !== '.' ) {
 			currentPath = Path.normalize( `${ formattedPath }/${ subPath }` );
 
-			Log.verbose( `Checking if ${ currentPath } exists` );
+			Log.verbose( `✨  Flour the table        - Check if ${ currentPath } exists` );
 			if( !Fs.existsSync( currentPath ) ) {
 				try {
 					Fs.mkdirSync( currentPath );
@@ -90,6 +90,37 @@ const RemoveDir = ( dir ) => {
 
 
 /**
+ * ReadFile - Promisified readFile function from Fs
+ *
+ * @param  {string} path - The path to the file to get data from
+ * @return {string}      - The data inside the file
+ */
+const ReadFile = path => new Promise( ( resolve, reject ) =>
+	Fs.readFile( path, ( error, data ) => {
+		if( error ) {
+			reject( new Error( error ) );
+		}
+		resolve( data );
+	}) );
+
+
+/**
+ * WriteFile - Promisified readFile function from Fs
+ *
+ * @param   {string} path - Where to save the file
+ * @param   {string} data - The data inside the file
+ * @return  {object}      - The WriteFile promise
+ */
+const WriteFile = ( path, data ) => new Promise( ( resolve, reject ) =>
+	Fs.writeFile( path, data, ( error ) => {
+		if( error ) {
+			reject( new Error( error ) );
+		}
+		resolve();
+	}) );
+
+
+/**
  * Create a file name from a url, width and browser
  * @param  {*}      url     - The url
  * @param  {*}      width   - The browser width
@@ -106,4 +137,6 @@ module.exports = {
 	RemoveDir,
 	CreateDir,
 	FileName,
+	ReadFile,
+	WriteFile,
 };
