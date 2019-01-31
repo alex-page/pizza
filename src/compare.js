@@ -14,13 +14,9 @@
 // Dependencies
 // ---------------------------------------------------------------------------------------------------------------------
 const Log = require( 'indent-log' );
-const CompareImages = require( 'resemblejs/compareImages' );
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// Local
-//----------------------------------------------------------------------------------------------------------------------
-const { ReadFile, WriteFile } = require( './files' );
+const { PNG } = require( 'pngjs' );
+const PixelMatch = require( 'pixelmatch' );
+const Fs = require( 'fs' );
 
 
 /**
@@ -32,17 +28,33 @@ const { ReadFile, WriteFile } = require( './files' );
  *
  * @return {promise}                      - Returns value
  */
-const Compare = ( filename, directories, visualDiffOptions ) => {
+const Compare = ( filename, directories ) => {
 	Log.verbose( `👀  Inspecting the crust   - Comparing ${ filename }` );
 
 	return new Promise( async ( resolve, reject ) => {
-		const rawFile = await ReadFile( directories.raw + filename );
-		const fixtureFile = await ReadFile( directories.fixture + filename );
+		const rawFile = await Fs
+			.createReadStream( directories.raw + filename )
+			.pipe( new PNG() );
+		const fixtureFile = await Fs
+			.createReadStream( directories.fixture + filename )
+			.pipe( new PNG() );
 
 		try {
-			const data = await CompareImages( rawFile, fixtureFile, visualDiffOptions );
+			const diff = new PNG({ width: rawFile.width, height: rawFile.height });
 
-			await WriteFile( directories.diff + filename, data.getBuffer() );
+			PixelMatch(
+				rawFile.data,
+				fixtureFile.data,
+				diff.data,
+				rawFile.width,
+				rawFile.height,
+				{
+					threshold: 0.1,
+				},
+			);
+
+			diff.pack()
+				.pipe( Fs.createWriteStream( directories.diff + filename ) );
 
 			resolve();
 		}

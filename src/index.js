@@ -30,15 +30,7 @@ const { FileName } = require( './files' );
 
 
 // indent-log settings and check if the user is in verbose mode
-Log.flags = {
-	banner:  ' 🍕 🍕 🍕   ',
-	error:   ' 🍕   🔥  ERROR: ',
-	info:    ' 🍕   🔔  INFO: ',
-	ok:      ' 🍕   👍  ',
-	done:    ' 🍕   🚀  DONE: ',
-	time:    ` 🍕   🕐  [${ Log.Style.bold( '#timestamp#' ) }]`,
-	verbose: ' 🍕   😬  VERBOSE: ',
-};
+Log.flags = SETTINGS.logs;
 
 if( process.argv.includes( '-v' ) || process.argv.includes( '--verbose' ) ) {
 	Log.verboseMode = true;
@@ -83,18 +75,18 @@ const Pizza = async ( settings ) => {
 		options = [].concat( ...options );
 
 		// Start the browser
-		Log.verbose( '🍅  Lathering on the sauce - Start puppeteer' );
-		const browserInstance = await Puppeteer.launch();
+		Log.verbose( '🍅  Lathering on the sauce - Start browser' );
+		const browser = await Puppeteer.launch();
 
 		// Iterated through the options and screenshot and compare
 		await Promise.all( options.map( async ( option ) => {
-			await Screenshot( browserInstance, option.url, option.width, option.filename );
+			await Screenshot( browser, option.url, option.width, option.filename );
 			await Compare( option.filename, settings.directories, SETTINGS.get().visualDiff );
 		}) );
 
 		// Close the browser instance
-		Log.verbose( '🔥  Paddling into oven     - Closing puppeteer ' );
-		await browserInstance.close();
+		Log.verbose( '🔥  Paddling into oven     - Closing browser' );
+		await browser.close();
 	}
 	catch( error ) {
 		Log.error( error.message );

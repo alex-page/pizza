@@ -24,7 +24,7 @@ const Log = require( 'indent-log' );
 const SETTINGS = {
 	defaults: {
 		pizza: {
-			urls:   [ 'http://localhost:8080/' ],
+			urls:   'http://designsystem.gov.au/',
 			widths: [ 1200, 320 ],
 
 			directories: {
@@ -48,6 +48,15 @@ const SETTINGS = {
 			},
 			scaleToSameSize: true,
 			ignore:          [ 'nothing', 'less', 'antialiasing', 'colors', 'alpha' ],
+		},
+		logs: {
+			banner:  ' 🍕 🍕 🍕   ',
+			error:   ' 🍕   🔥  ERROR: ',
+			info:    ' 🍕   🔔  INFO: ',
+			ok:      ' 🍕   👍  ',
+			done:    ' 🍕   🚀  DONE: ',
+			time:    ` 🍕   🕐  [${ Log.Style.bold( '#timestamp#' ) }]`,
+			verbose: ' 🍕   😬  VERBOSE: ',
 		},
 	},
 
